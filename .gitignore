@@ -1,4 +1,4 @@
 SECRET.json
 data/*_people.json
 .DS_Store
-# this tells it to ignore all files with a json ending
+# this tells it to ignore all files with a json endings
