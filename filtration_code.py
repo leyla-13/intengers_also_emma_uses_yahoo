@@ -10,7 +10,7 @@ for dictionary in data:
                         politicians.append(dictionary)
 
 politician_data=[]
-
+politician_birthdate_lists=[]
 for politician in politicians:
         if "ontology/spouse_label" in politician:
                 n_spouses=1
@@ -25,10 +25,21 @@ for politician in politicians:
                         n_children=len(politician["ontology/child_label"])
         else:
                 n_children=0
-        if "ontology/religion" in politician:
-                religion=politician["ontology/religion"]
+        if "ontology/religion_label" in politician:
+                religion=politician["ontology/religion_label"]
         else:
                 religion=None
-        politician_data.append({"name":[politician["title"]], "party":[politician["ontology/party_label"]], "n_spouses":n_spouses, "n_children":n_children, "ontology/religion":religion})
+        if "ontology/birthDate" in politician:
+                if type(politician["ontology/birthDate"]) is str:
+                        birthdate=politician["ontology/birthDate"]
+                        birthdate_split=birthdate.split("-")
+                        birthyear=int(birthdate_split[0])
+                        # birthyear=int(birthyear_string)
+                elif type(politician["ontology/birthDate"]) is list:
+                        birthyear=None
+        else:
+                birthyear=None
+
+        politician_data.append({"name":politician["title"], "party":politician["ontology/party_label"], "n_spouses":n_spouses, "n_children":n_children, "religion":religion, "birthyear":birthyear})
 #creates a list called "politician_data" that contains dictionairies for each wikipedia page of a politician, their political party, and their number of spouses
 print(politician_data)
