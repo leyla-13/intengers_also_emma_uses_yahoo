@@ -12,7 +12,8 @@ prefilter <- read_csv('politicians_data_all.csv')
 
 #col_names are: 'name', 'party' 'n_spouses', 'n_children', 'religion', 'birthyear'
 data <- filter(prefilter, Party == "Democratic Party (United States)"| Party == "Republican Party (United States)") |>
-  rename("name" = Name, "party" = Party ,"n_spouses"  = n_Spouses, "n_children" = n_Children, "religion"  = Religion, "birth_year" =  Birthyear)
+  rename("name" = Name, "party" = Party ,"n_spouses"  = n_Spouses, "n_children" = n_Children, "religion"  = Religion, "birth_year" =  Birthyear) |>
+  mutate(n_spouses = as.numeric(n_spouses), n_children = as.numeric(n_children), birth_year = as.numeric(birth_year)) 
 
 ##
 distinct(data, religion) |>
@@ -21,7 +22,10 @@ distinct(data, religion) |>
 
 
 ## spouse and kid data present
-dat_spouse <- filter(data, n_spouses > 0) 
+dat_spouse <- filter(data, n_spouses > 0 | n_children > 0) 
+
+# of divorces could be good
+# look at distribution of zeros as well
 
 # find out how to seperate into groups
 # this one is for wives
@@ -32,19 +36,15 @@ spouses_dem <- filter(data, party == "democratic") |>
 spouses_rep <- filter(data, party == "republican")
 
 
-leveneTest(n_spouses ~ party, data = data)
+# leveneTest(n_spouses ~ party, data = data)
 
-t.test(n_spouses ~ party, var.equal=TRUE, data = data)
+t.test(dems$n_spouses, spouses_rep$n_children, 
+alternative = "greater",
+var.equal=TRUE, data = data)
 
-#or
 
-wives_t_test <- t.test(wives_dem, wives_rep)
 
 print(wives_t_test)
 
 # this one is for kids
-kids_dem <- 
-kids_rep <- 
 
-kids_t_test <- t.test(kids_dem, kids_rep)
-print(kids_t_test)
