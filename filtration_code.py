@@ -42,4 +42,6 @@ for politician in politicians:
 
         politician_data.append({"name":politician["title"], "party":politician["ontology/party_label"], "n_spouses":n_spouses, "n_children":n_children, "religion":religion, "birthyear":birthyear})
 #creates a list called "politician_data" that contains dictionairies for each wikipedia page of a politician, their political party, and their number of spouses
-print(politician_data)
+for dictionary in politician_data:
+        with open("politicians_data_A.csv", "a", encoding="utf-8") as file:
+                file.write(f"{dictionary} \n")
