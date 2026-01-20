@@ -8,9 +8,18 @@ for dataset in datasets:
         politicians=[]
         for dictionary in data:
                 if "ontology/party_label" in dictionary:
-                        if dictionary["ontology/party_label"]=="Democratic Party (United States)" or dictionary["ontology/party_label"]=="Republican Party (United States)":
-                                politicians.append(dictionary)
+                        if type(dictionary["ontology/party_label"]) is str:
+                                if dictionary["ontology/party_label"]=="Democratic Party (United States)" or dictionary["ontology/party_label"]=="Republican Party (United States)":
+                                        politicians.append(dictionary)
+                        elif type(dictionary["ontology/party_label"]) is list:
+                                political_party=dictionary["ontology/party_label"][0]
+                                if political_party=="Democratic Party (United States)" or political_party=="Republican Party (United States)":
+                                        politicians.append(dictionary)              
         for politician in politicians:
+                if type(politician["ontology/party_label"]) is str:
+                        party=politician["ontology/party_label"]
+                elif type(politician["ontology/party_label"]) is list:
+                        party=politician["ontology/party_label"][0]
                 if "ontology/spouse_label" in politician:
                         n_spouses=1
                         if type(politician["ontology/spouse_label"]) is list:
@@ -38,7 +47,7 @@ for dataset in datasets:
                 else:
                         birthyear=None
 
-                politician_data.append({"name":politician["title"], "party":politician["ontology/party_label"], "n_spouses":n_spouses, "n_children":n_children, "religion":religion, "birthyear":birthyear})
+                politician_data.append({"name":politician["title"], "party":party, "n_spouses":n_spouses, "n_children":n_children, "religion":religion, "birthyear":birthyear})
         #creates a list called "politician_data" that contains dictionairies for each wikipedia page of a politician, their political party, and their number of spouses
 with open("politicians_data_all.csv", "w", encoding="utf-8") as file:
         file.write("Name, Party, n_Spouses, n_Children, Religion, Birthyear \n")
