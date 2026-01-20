@@ -21,9 +21,9 @@ ggplot(data_spouse_over0_birthyear_party, aes(x=birth_year, y=avg_spouses_year, 
   geom_line()+
   scale_color_manual(values=c("Democratic Party (United States)"="#0008ffff", "Republican Party (United States)"="#ff0000ff"))+
   labs(x="Birth year",
-      y="Number of spouses",
+      y="Average number of spouses",
     color="Political party")
-ggsave("Number of spouses vs Birthyear per political party.pdf", width=30, height=10, units="cm")
+ggsave("Average number of spouses vs Birthyear per political party.pdf", width=30, height=10, units="cm")
 
 data_children_over0_birthyear_party <- filter(data, n_children>0)|>
   filter(birth_year>0)|>
@@ -35,6 +35,6 @@ ggplot(data_children_over0_birthyear_party, aes(x=birth_year, y=avg_children_yea
   geom_line()+
   scale_color_manual(values=c("Democratic Party (United States)"="#0008ffff", "Republican Party (United States)"="#ff0000ff"))+
   labs(x="Birth year",
-      y="Number of children",
+      y="Average number of children",
     color="Political party")
-ggsave("Number of children vs Birthyear per political party.pdf", width=30, height=10, units="cm")
+ggsave("Average number of children vs Birthyear per political party.pdf", width=30, height=10, units="cm")
