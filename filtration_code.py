@@ -36,20 +36,20 @@ for dataset in datasets:
                 if "ontology/religion_label" in politician:
                         religion=politician["ontology/religion_label"]
                 else:
-                        religion=None
+                        religion=''
                 if "ontology/birthDate" in politician:
                         if type(politician["ontology/birthDate"]) is str:
                                 birthdate=politician["ontology/birthDate"]
                                 birthdate_split=birthdate.split("-")
                                 birthyear=int(birthdate_split[0])
                         elif type(politician["ontology/birthDate"]) is list:
-                                birthyear=None
+                                birthyear=''
                 else:
-                        birthyear=None
+                        birthyear=''
 
                 politician_data.append({"name":politician["title"], "party":party, "n_spouses":n_spouses, "n_children":n_children, "religion":religion, "birthyear":birthyear})
         #creates a list called "politician_data" that contains dictionairies for each wikipedia page of a politician, their political party, and their number of spouses
-with open("politicians_data_all.csv", "w", encoding="utf-8") as file:
+with open("politicians_data_all_rewritten.csv", "w", encoding="utf-8") as file:
         file.write("Name, Party, n_Spouses, n_Children, Religion, Birthyear \n")
         for dictionary in politician_data:
                 file.write(f"{dictionary['name']}, {dictionary['party']}, {dictionary['n_spouses']}, {dictionary['n_children']}, {dictionary['religion']}, {dictionary['birthyear']} \n")
