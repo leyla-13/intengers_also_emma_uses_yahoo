@@ -3,7 +3,7 @@
 
 library(stats)
 library(tidyverse)
-library(car)
+# library(car)
 
 
 prefilter <- read_csv('politicians_data_all.csv')
