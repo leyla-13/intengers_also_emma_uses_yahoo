@@ -17,16 +17,76 @@ prefilter <- read_csv('politicians_data_all.csv')
 
 data <- filter(prefilter, Party == "Democratic Party (United States)"| Party == "Republican Party (United States)") |>
   rename("name" = Name, "party" = Party ,"n_spouses"  = n_Spouses, "n_children" = n_Children, "religion"  = Religion, "birth_year" =  Birthyear) |>
-  mutate(n_spouses = as.numeric(n_spouses), n_children = as.numeric(n_children), birth_year = as.numeric(birth_year))
-  # mutate(religion = recode(religion,
-  #     "Catholic Church" = "Catholic Church",
-  #     "Christianity" = "Catholic Church",
-  #     "['Catholic Church'" = "Catholic Church",
-  #     "christian" = "Christianity",
-  #     "Islam" = "Islam",
-  #     "islam" = "Islam"
-  #   )
-  # )
+  mutate(n_spouses = as.numeric(n_spouses), n_children = as.numeric(n_children), birth_year = as.numeric(birth_year)) |>
+  mutate(religion = case_match(religion,
+      "Universalism" ~ "Progressive Christian",
+      "United Church of Christ" ~ "Progressive Christian",
+      "Evangelical Lutheran Church in America" ~ "Progressive Christian",
+      "United Methodist Church" ~ "Progressive Christian",
+      "Presbyterian Church in the United States of America" ~ "Progressive Christian",
+      "Presbyterian Church in the United States" ~ "Progressive Christian",
+      "Episcopal Church (United States) " ~ "Progressive Christian",
+      "Unitarian Universalism" ~ "Progressive Christian",
+      "Christian Church (Disciples of Christ)" ~ "Progressive Christian",
+      "['United Methodist Church' " ~ "Progressive Christian",
+      "The Salvation Army" ~ "Progressive Christian",
+      "Presbyterian Church (USA) " ~ "Progressive Christian",
+      "Seventh-day Adventist Church" ~ "Conservative Christian",
+      "Congregational church" ~ "Conservative Christian",
+      "Christian churches and churches of Christ" ~ "Conservative Christian",
+      "Church of Christ" ~ "Conservative Christian",
+      "Congregational Christian Church in American Samoa" ~ "Conservative Christian",
+      "Christian fundamentalism " ~ "Conservative Christian",
+      "Lutheran Church–Missouri Synod" ~ "Conservative Christian",
+      "Evangelicalism" ~ "Conservative Christian",
+      "Churches of Christ" ~ "Conservative Christian",
+      "Church of the Nazarene" ~ "Conservative Christian",
+      "Christian and Missionary Alliance" ~ "Conservative Christian",
+      "The Church of Jesus Christ of Latter-day Saints" ~ "Conservative Christian",
+      "Southern Baptist Convention " ~ "Conservative Christian",
+      "Presbyterian Church in America" ~ "Conservative Christian",
+      "Anglican Church in North America" ~ "Conservative Christian",
+      "Greek Orthodox Church" ~ "Conservative Christian",
+      "Eastern Orthodox Church" ~ "Conservative Christian",
+      "Holiness movement " ~ "Conservative Christian",
+      "Missionary Baptists" ~ "Conservative Christian",
+      "Quakers" ~ "Conservative Christian",
+      "African Methodist Episcopal Church" ~ "Conservative Christian",
+      "Christian" ~ "Undefined Christian",
+      "Christianity" ~ "Undefined Christian",
+      "['Christianity'" ~ "Undefined Christian",
+      "Protestantism" ~ "Undefined Christian",
+      "Lutheranism" ~ "Undefined Christian",
+      "Calvinism" ~ "Undefined Christian",
+      "['Calvinism'" ~ "Undefined Christian",
+      "Baptists" ~ "Undefined Christian",
+      "['Baptists' " ~ "Undefined Christian",
+      "Methodism " ~ "Undefined Christian",
+      "Presbyterianism" ~ "Undefined Christian",
+      "Anglicanism" ~ "Undefined Christian",
+      "Catholic Church" ~ "Undefined Christian",
+      "Catholicismx" ~ "Undefined Christian",
+      "['Catholic Church' " ~ "Undefined Christian",
+      "Nondenominational Christianity  " ~ "Undefined Christian",
+      "New Hope Christian Fellowship " ~ "Undefined Christian",
+      "Religious views of Abraham Lincoln " ~ "Undefined Christian",
+      "Christian Reformed Church in North America" ~ "Undefined Christian",
+      "Christian Science" ~ "Undefined Christian",
+      "Islam" ~ "Non Christian",
+      "Judaism" ~ "Non Christian",
+      "Jews" ~ "Non Christian",
+      "Reform Judaism " ~ "Non Christian",
+      "Conservative Judaism" ~ "Non Christian",
+      "Sephardi Jews" ~ "Non Christian",
+      "American Jews " ~ "Non Christian",
+      "['Agnosticism'" ~ "Non Christian",
+      "['Scientology'" ~ "Non Christian",
+      "Unitarianism" ~ "Non Christian"
+    )
+  )
+
+distinct(data, religion) |>
+  print(n = 200) 
 
 
 ## filtered for data that has a spouses listed (over 0) and added a remarriage column
