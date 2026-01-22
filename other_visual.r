@@ -1,7 +1,10 @@
-install.packages("jtools")
+
+## PART 2 - VISUALIZATION
+## please install these packages if they are not present
 library(tidyverse)
 library(ggplot2)
 library(jtools)
+library(dplyr)
 
 
   
@@ -147,7 +150,31 @@ dem_rep_bar <-  relative_remarriage |>
 
 print(dem_rep_bar)
 
-ggsave('bar_plot_spouse.pdf', plot = dem_rep_bar, width = 25 , height = 10, units = "cm")
+
+# WE USED THIS ONE relative spouse number per party
+remarriage_party_bar <-  relative_remarriage |> 
+  ggplot(mapping = aes(x = party, y = relative_remarriage, fill = party)) +
+  geom_col(position = "dodge") +
+  labs(x = "Political Party",
+  y = "Percentage of Remarried Politicians") +
+  scale_y_continuous(labels = scales::label_percent()) +
+  scale_x_discrete(labels=c("Democratic", "Republican")) +
+  theme_apa(legend.pos = "right",
+  legend.use.title = FALSE,
+  legend.font.size = 12,
+  x.font.size = 12,
+  y.font.size = 12,
+  facet.title.size = 12,
+  remove.y.gridlines = TRUE,
+  remove.x.gridlines = TRUE) +
+  theme(legend.position="none") +
+  scale_fill_manual(values=c("#1E1BE3","#E31B1B"))
+  
+
+print(remarriage_party_bar)
+
+
+ggsave('bar_plot_spouse.pdf', plot = dem_rep_bar, width = 10 , height = 12, units = "cm")
 
 #bar graph for kid number
 dem_rep_bar_kid <-  summary_kids_non |> 
@@ -169,13 +196,14 @@ print(dem_rep_bar_kid)
 
 ggsave('bar_plot_kid.pdf', plot = dem_rep_bar_kid, width = 8 , height = 10, units = "cm")
 
-## religion remarriage relative graph
+## THIS WAS USED religion remarriage relative graph
 religion_remarriage <- order_dat |>
+  filter(religion %in% c( "Conservative Christian","Progressive Christian","Undefined Christian"))   |>
 ggplot(mapping = aes(x=religion, y=dummy_spouse, fill=party)) +
   geom_col(stat="summary", fun=mean, position="dodge")+
   scale_fill_manual(values=c("Democratic Party (United States)"="#1E1BE3", "Republican Party (United States)"="#E31B1B"), labels=c("Democratic", "Republican"))+
   labs(x="Religion Category",
-      y="Percentage of politicians \n that remarried",
+      y="Percentage of Remarried Politicians",
       fill="Political party")+
   scale_x_discrete(labels=c("Christian \n (Conservative)", "Christian \n (Progressive)", "Christian  \n (Undefined)", "Non-Christian"))+
   scale_y_continuous(labels=scales::label_percent()) +   
@@ -186,9 +214,43 @@ ggplot(mapping = aes(x=religion, y=dummy_spouse, fill=party)) +
   y.font.size = 12,
   facet.title.size = 12,
   remove.y.gridlines = TRUE,
-  remove.x.gridlines = TRUE) 
+  remove.x.gridlines = TRUE)
 
 print(religion_remarriage)
-ggsave("Percentage of politicians that remarried vs Religion per political party.pdf", width=30, height=10, units="cm")
+ggsave("Percentage of politicians that remarried vs Religion per political party.pdf", plot = religion_remarriage, width=30, height=10, units="cm")
 
+
+generation_remarriage <- new_dat |>
+  filter(generation %in% c( "greatest_generation","silent_generation","baby_boomers","generation_x")) |>
+ggplot(mapping = aes(x=generation, y=dummy_spouse, fill=party)) +
+  geom_col(stat="summary", fun=mean, position="dodge")+
+  scale_fill_manual(values=c("Democratic Party (United States)"="#1E1BE3", "Republican Party (United States)"="#E31B1B"), labels=c("Democratic", "Republican"))+
+  labs(x= "Generation",
+      y="Percentage of Remarried Politicians",
+      fill="Political Party")+
+  scale_x_discrete(labels=c("Greatest Generation","Silent Generation", "Baby Boomers", "Generation X", "Generation Y"))+
+  scale_y_continuous(labels=scales::label_percent()) +   
+  theme_apa(  legend.pos = "right",
+  legend.use.title = FALSE,
+  legend.font.size = 12,
+  x.font.size = 12,
+  y.font.size = 12,
+  facet.title.size = 12,
+  remove.y.gridlines = TRUE,
+  remove.x.gridlines = TRUE)
+
+print(generation_remarriage)
+ 
+ggsave("Percentage of politicians that remarried vs Generation per political party.pdf", plot = generation_remarriage, width=30, height=10, units="cm")
+
+#generation plot
+ggplot(data, aes(x=generation, y=dummy_spouse, fill=party)) +
+  geom_bar(stat="summary", fun=mean, position="dodge")+
+  scale_fill_manual(values=c("Democratic Party (United States)"="#1E1BE3", "Republican Party (United States)"="#E31B1B"), labels=c("Democratic", "Republican"))+
+  labs(x="Generation",
+      y="Percentage of politicians \n that remarried",
+      fill="Political party")+
+  scale_x_discrete(labels=c("Greatest Generation","Silent Generation", "Baby Boomers", "Generation X", "Generation Y"))+
+  scale_y_continuous(labels=scales::label_percent())
   
+ggsave("Percentage of politicians that remarried vs Generation per political party.pdf", width=30, height=10, units="cm")
