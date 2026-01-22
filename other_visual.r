@@ -47,18 +47,19 @@ distribution_child <-  new_dat |>
 
 #looking at the zero distribution for remarriage
 distribution_spouse <-  new_dat |> 
-  ggplot(mapping = aes(x = remarriage, fill = party)) +
+  ggplot(mapping = aes(x = n_spouses, fill = party)) +
   geom_bar(position = "dodge") +
-  labs(x = "Number of Politicians", y = "Number of Remarriages", fill=" Political Party") +
+  labs(x = "Number of Marriages", y = "Number of Politicians", fill=" Political Party") +
   scale_fill_manual(values=c("#1E1BE3","#E31B1B"), labels = c("Democratic", "Republican")) +
-  theme_apa(  legend.pos = "right",
+  theme_apa( legend.pos = "right",
   legend.use.title = TRUE,
   legend.font.size = 12,
   x.font.size = 12,
   y.font.size = 12,
   facet.title.size = 12,
   remove.y.gridlines = TRUE,
-  remove.x.gridlines = TRUE) 
+  remove.x.gridlines = TRUE) +
+  scale_x_continuous(breaks = seq(1,6, by = 1))
 
 
 #religion distribution per party
