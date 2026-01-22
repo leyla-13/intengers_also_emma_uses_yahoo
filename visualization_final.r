@@ -21,7 +21,7 @@ data <- read_csv("new_cleaner_beautiful_data.csv") |>
 
 ggplot(data, aes(x=generation, y=dummy_spouse, fill=party)) +
   geom_bar(stat="summary", fun=mean, position="dodge")+
-  scale_fill_manual(values=c("Democratic Party (United States)"="#1E1BE3", "Republican Party (United States)"="#E31B1B"))+
+  scale_fill_manual(values=c("Democratic Party (United States)"="#1E1BE3", "Republican Party (United States)"="#E31B1B"), labels=c("Democratic", "Republican"))+
   labs(x="Generation",
       y="Percentage of politicians \n that remarried",
       fill="Political party")+
