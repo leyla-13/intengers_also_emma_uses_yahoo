@@ -121,7 +121,7 @@ dat_spouse <- dat_spouse |>
   mutate(generation = sapply(birth_year, generation_making))
 
 # wrote the cleaned data into a new csv file
-write_csv(dat_spouse, "new_cleaner_beautiful_data.csv")
+write_csv(dat_spouse, "new_cleaner_beautiful_data_pre_manual_removal.csv")
 
 ## PART 2 - VISUALIZATION
 
@@ -178,7 +178,7 @@ remarriage_party_bar <-  relative_remarriage |>
   
 print(remarriage_party_bar)
 
-ggsave('bar_plot_spouse.pdf', plot = dem_rep_bar, width = 10 , height = 12, units = "cm")
+ggsave('bar_plot_spouse.pdf', plot = remarriage_party_bar, width = 10 , height = 10, units = "cm")
 
 
 # visualizing relative remarriage grouped by party per religion
@@ -203,11 +203,12 @@ ggplot(mapping = aes(x=religion, y=dummy_spouse, fill=party)) +
   remove.x.gridlines = TRUE)
 
 print(religion_remarriage)
-ggsave("Percentage of politicians that remarried vs Religion per political party.pdf", width=30, height=10, units="cm")
+ggsave("Percentage of politicians that remarried vs Religion per political party.pdf", width=30, height=15, units="cm")
 
 
 # visalizing relative remarriage grouped by party per generation
 generation_remarriage <- new_dat |>
+  mutate(generation=fct_relevel(generation, c("greatest_generation", "silent_generation", "baby_boomers", "generation_x", "generation_y")))|>
   filter(generation %in% c( "greatest_generation","silent_generation","baby_boomers","generation_x")) |>
 ggplot(mapping = aes(x=generation, y=dummy_spouse, fill=party)) +
   geom_col(stat="summary", fun=mean, position="dodge")+
@@ -228,4 +229,4 @@ ggplot(mapping = aes(x=generation, y=dummy_spouse, fill=party)) +
 
 print(generation_remarriage)
  
-ggsave("Percentage of politicians that remarried vs Generation per political party.pdf", plot = generation_remarriage, width=30, height=10, units="cm")
+ggsave("Percentage of politicians that remarried vs Generation per political party.pdf", plot = generation_remarriage, width=30, height=15, units="cm")
