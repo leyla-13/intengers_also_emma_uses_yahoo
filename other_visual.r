@@ -169,5 +169,26 @@ print(dem_rep_bar_kid)
 
 ggsave('bar_plot_kid.pdf', plot = dem_rep_bar_kid, width = 8 , height = 10, units = "cm")
 
+## religion remarriage relative graph
+religion_remarriage <- order_dat |>
+ggplot(mapping = aes(x=religion, y=dummy_spouse, fill=party)) +
+  geom_col(stat="summary", fun=mean, position="dodge")+
+  scale_fill_manual(values=c("Democratic Party (United States)"="#1E1BE3", "Republican Party (United States)"="#E31B1B"), labels=c("Democratic", "Republican"))+
+  labs(x="Religion Category",
+      y="Percentage of politicians \n that remarried",
+      fill="Political party")+
+  scale_x_discrete(labels=c("Christian \n (Conservative)", "Christian \n (Progressive)", "Christian  \n (Undefined)", "Non-Christian"))+
+  scale_y_continuous(labels=scales::label_percent()) +   
+  theme_apa(  legend.pos = "right",
+  legend.use.title = FALSE,
+  legend.font.size = 12,
+  x.font.size = 12,
+  y.font.size = 12,
+  facet.title.size = 12,
+  remove.y.gridlines = TRUE,
+  remove.x.gridlines = TRUE) 
+
+print(religion_remarriage)
+ggsave("Percentage of politicians that remarried vs Religion per political party.pdf", width=30, height=10, units="cm")
 
   
