@@ -49,7 +49,7 @@ distribution_child <-  new_dat |>
 distribution_spouse <-  new_dat |> 
   ggplot(mapping = aes(x = remarriage, fill = party)) +
   geom_bar(position = "dodge") +
-  labs(x = "Number of Remarriages", y = "Number of Remarriages", fill=" Political Party") +
+  labs(x = "Number of Politicians", y = "Number of Remarriages", fill=" Political Party") +
   scale_fill_manual(values=c("#1E1BE3","#E31B1B"), labels = c("Democratic", "Republican")) +
   theme_apa(  legend.pos = "right",
   legend.use.title = TRUE,
