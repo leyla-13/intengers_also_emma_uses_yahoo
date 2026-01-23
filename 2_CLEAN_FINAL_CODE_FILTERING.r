@@ -90,13 +90,27 @@ data <- prefilter |>
     )
   )
 
+#showing number of Republicans and Democrats
+data_numbers <- group_by(data, party)|>
+  summarise(n=n())|>
+  print()
+
+#filtered for data that has a birthyear from 1901 onwards
+data_1901 <- filter(data, birth_year>=1901)
+
+#showing number of Republicans and Democrats born from 1901 onwards
+data_1901_numbers <- group_by(data_1901, party)|>
+  summarise(n=n())|>
+  print()
 
 # filtered for data that has a spouses listed (over 0) and added a remarriage column
-dat_spouse <- filter(data,  n_spouses > 0) |>
-  mutate(n_spouses = as.numeric(n_spouses), n_children = as.numeric(n_children), 
-  birth_year = as.numeric(birth_year)) |>
-  mutate(remarriage = n_spouses - 1) |>
-  filter(birth_year > 1901)
+dat_spouse <- filter(data_1901,  n_spouses > 0) |>
+  mutate(remarriage = n_spouses - 1)
+
+#showing number of Republicans and Democrats born from 1901 onwards that have at least one spouse listed
+data_spouse_numbers <- group_by(dat_spouse, party)|>
+  summarise(n=n())|>
+  print()
 
 # making a function for birth year grouping by generation
 generation_making <- function(birth_year) {

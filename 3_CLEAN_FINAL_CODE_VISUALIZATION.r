@@ -20,6 +20,26 @@ new_dat <- read_csv("new_cleaner_beautiful_data.csv") |>
     TRUE ~ NA
   ))
 
+#showing number of politicians that have one spouse and more than one spouse
+spouse_number_analysis <- group_by(new_dat, party, dummy_spouse)|>
+  summarise(n=n())|>
+  print()
+
+#showing number of politicians per party that have children and no children
+children_number_analysis <- group_by(new_dat, party, dummy_child)|>
+  summarise(n=n())|>
+  print()
+
+#showing number of polticians per party per generation
+generation_number_analysis <- group_by(new_dat, party, generation)|>
+  summarise(n=n())|>
+  print()
+
+#showing number of politicians per party per religious subgroup
+religion_number_analysis <- group_by(new_dat, party, religion)|>
+  summarise(n=n())|>
+  print()
+
 # calculating SD and varience to check data comparability
 sum_rep <- new_dat |>
   group_by(party) |>

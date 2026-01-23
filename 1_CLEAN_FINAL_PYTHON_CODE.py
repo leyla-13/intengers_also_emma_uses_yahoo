@@ -7,6 +7,8 @@ for dataset in datasets:
                 data = json.load(file)
         politicians=[]
         for dictionary in data:
+                # creating a new list of dictionaries only including politicians that have the Democratic Party
+                # or the Republican Party listed as their political party. Checking only for the last party if the parties are a list
                 if "ontology/party_label" in dictionary:
                         if type(dictionary["ontology/party_label"]) is str:
                                 if dictionary["ontology/party_label"]=="Democratic Party (United States)" or dictionary["ontology/party_label"]=="Republican Party (United States)":
@@ -20,12 +22,14 @@ for dataset in datasets:
                         party=politician["ontology/party_label"]
                 elif type(politician["ontology/party_label"]) is list:
                         party=politician["ontology/party_label"][0]
+                # including number of spouses for each politician
                 if "ontology/spouse_label" in politician:
                         n_spouses=1
                         if type(politician["ontology/spouse_label"]) is list:
                                 n_spouses=len(politician["ontology/spouse_label"])
                 else:
                         n_spouses=0
+                # including number of children for each politician
                 if "ontology/child_label" in politician:
                         if type(politician["ontology/child_label"]) is str:
                                 n_children=1
@@ -33,10 +37,13 @@ for dataset in datasets:
                                 n_children=len(politician["ontology/child_label"])
                 else:
                         n_children=0
+                # including religion for each politician
                 if "ontology/religion_label" in politician:
                         religion=politician["ontology/religion_label"]
                 else:
                         religion=None
+                # including birthyear for each politician. Setting birthyear to non-applicable value for politicians that
+                # have a list of birthdates in their wikipedia entry instead of a single clearly defined birthdate
                 if "ontology/birthDate" in politician:
                         if type(politician["ontology/birthDate"]) is str:
                                 birthdate=politician["ontology/birthDate"]
@@ -46,9 +53,10 @@ for dataset in datasets:
                                 birthyear=None
                 else:
                         birthyear=None
-
+                #creates a list called "politician_data" that contains dictionairies for each wikipedia entry of a politician,
+                # their political party, number of listed spouses, number of listed children, religion, and birthyear.
                 politician_data.append({"name":politician["title"], "party":party, "n_spouses":n_spouses, "n_children":n_children, "religion":religion, "birthyear":birthyear})
-        #creates a list called "politician_data" that contains dictionairies for each wikipedia page of a politician, their political party, and their number of spouses
+# saves all data to a .csv file
 with open("politicians_data_all.csv", "w", encoding="utf-8") as file:
         file.write("Name, Party, n_Spouses, n_Children, Religion, Birthyear \n")
         for dictionary in politician_data:
